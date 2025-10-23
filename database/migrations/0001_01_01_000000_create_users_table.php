@@ -17,6 +17,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('cpf')->unique();
+            $table->string('govbr_id')->nullable();
+            $table->foreignId('role_id')->nullable()->constrained('roles');
             $table->rememberToken();
             $table->timestamps();
         });
