@@ -37,5 +37,6 @@ class Application extends Model
     public function health_post()
     {
         return $this->belongsTo(HealthPost::class);
+    }
     
 }

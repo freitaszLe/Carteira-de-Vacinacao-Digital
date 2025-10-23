@@ -6,39 +6,45 @@ use App\Models\Vaccine;
 use Illuminate\Http\Request;
 use App\Http\Requests\VaccineRequest;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class VaccineController extends Controller
 {
     // Listar todas as vacinas
-    public function index(): JsonResponse
+    public function index(): View
     {
-        return response()->json(Vaccine::all());
+        $vaccines = Vaccine::all();
+        return view('vaccines.index', compact('vaccines'));
     }
 
-    // Criar nova vacina
-    public function store(VaccineRequest $request): JsonResponse
+    public function create()
     {
-        $vaccine = Vaccine::create($request->validated());
-        return response()->json($vaccine, 201);
+        return view('vaccines.form');
     }
 
-    // Mostrar uma vacina
-    public function show(Vaccine $vaccine): JsonResponse
+    // Formulário de edição
+    public function edit(Vaccine $vaccine)
     {
-        return response()->json($vaccine);
+        return view('vaccines.form', compact('vaccine'));
     }
 
-    // Atualizar vacina
-    public function update(VaccineRequest $request, Vaccine $vaccine): JsonResponse
+    // Store e update continuam iguais, mas você pode fazer redirect para index:
+    public function store(VaccineRequest $request): RedirectResponse
+    {
+        Vaccine::create($request->validated());
+        return redirect()->route('vaccines.index');
+    }
+
+    public function update(VaccineRequest $request, Vaccine $vaccine): RedirectResponse
     {
         $vaccine->update($request->validated());
-        return response()->json($vaccine);
+        return redirect()->route('vaccines.index');
     }
 
-    // Deletar vacina
-    public function destroy(Vaccine $vaccine): JsonResponse
+    public function destroy(Vaccine $vaccine)
     {
         $vaccine->delete();
-        return response()->json(['message' => 'Vaccine deleted']);
+        return redirect()->route('vaccines.index');
     }
 }
