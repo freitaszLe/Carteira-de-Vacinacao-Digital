@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('adminlte::page')
 
 @section('title', isset($vaccine) ? 'Editar Vacina' : 'Nova Vacina')
 
